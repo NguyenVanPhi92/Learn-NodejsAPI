@@ -15,14 +15,8 @@ class ConversationService {
   }) {
     const match = {
       $or: [
-        {
-          sender_id: new ObjectId(sender_id),
-          receiver_id: new ObjectId(receiver_id)
-        },
-        {
-          sender_id: new ObjectId(receiver_id),
-          receiver_id: new ObjectId(sender_id)
-        }
+        { sender_id: new ObjectId(sender_id), receiver_id: new ObjectId(receiver_id) },
+        { sender_id: new ObjectId(receiver_id), receiver_id: new ObjectId(sender_id) }
       ]
     }
     const conversations = await databaseService.conversations
@@ -32,10 +26,7 @@ class ConversationService {
       .limit(limit)
       .toArray()
     const total = await databaseService.conversations.countDocuments(match)
-    return {
-      conversations,
-      total
-    }
+    return { conversations, total }
   }
 }
 const conversationService = new ConversationService()

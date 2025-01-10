@@ -13,13 +13,8 @@ class TweetsService {
         // Tìm hashtag trong database, nếu có thì lấy, không thì tạo mới
         return databaseService.hashtags.findOneAndUpdate(
           { name: hashtag },
-          {
-            $setOnInsert: new Hashtag({ name: hashtag })
-          },
-          {
-            upsert: true,
-            returnDocument: 'after'
-          }
+          { $setOnInsert: new Hashtag({ name: hashtag }) },
+          { upsert: true, returnDocument: 'after' }
         )
       })
     )

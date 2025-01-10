@@ -15,11 +15,8 @@ if (!fs.existsSync(path.resolve(envFilename))) {
   console.log(`Vui lòng tạo file ${envFilename} và tham khảo nội dung ở file .env.example`)
   process.exit(1)
 }
-config({
-  path: envFilename
-})
+config({ path: envFilename })
 export const isProduction = env === 'production'
-
 export const envConfig = {
   port: (process.env.PORT as string) || 4000,
   host: process.env.HOST as string,

@@ -47,9 +47,7 @@ class UsersService {
         verify
       },
       privateKey: envConfig.jwtSecretRefreshToken,
-      options: {
-        expiresIn: envConfig.refreshTokenExpiresIn
-      }
+      options: { expiresIn: envConfig.refreshTokenExpiresIn }
     })
   }
   private signEmailVerifyToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
@@ -60,9 +58,7 @@ class UsersService {
         verify
       },
       privateKey: envConfig.jwtSecretEmailVerifyToken,
-      options: {
-        expiresIn: envConfig.emailVerifyTokenExpiresIn
-      }
+      options: { expiresIn: envConfig.emailVerifyTokenExpiresIn }
     })
   }
   private signForgotPasswordToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {

@@ -13,7 +13,6 @@ export const createTweetController = async (req: Request<ParamsDictionary, any, 
     result
   })
 }
-
 export const getTweetController = async (req: Request, res: Response) => {
   const result = await tweetsService.increaseView(req.params.tweet_id, req.decoded_authorization?.user_id)
   const tweet = {
@@ -27,7 +26,6 @@ export const getTweetController = async (req: Request, res: Response) => {
     result: tweet
   })
 }
-
 export const getTweetChildrenController = async (req: Request<TweetParam, any, any, TweetQuery>, res: Response) => {
   const tweet_type = Number(req.query.tweet_type) as TweetType
   const limit = Number(req.query.limit)
@@ -51,24 +49,13 @@ export const getTweetChildrenController = async (req: Request<TweetParam, any, a
     }
   })
 }
-
 export const getNewFeedsController = async (req: Request<ParamsDictionary, any, any, Pagination>, res: Response) => {
   const user_id = req.decoded_authorization?.user_id as string
   const limit = Number(req.query.limit)
   const page = Number(req.query.page)
-  const result = await tweetsService.getNewFeeds({
-    user_id,
-    limit,
-    page
-  })
-
+  const result = await tweetsService.getNewFeeds({ user_id, limit, page })
   return res.json({
     message: 'Get New Feeds Successfully',
-    result: {
-      tweets: result.tweets,
-      limit,
-      page,
-      total_page: Math.ceil(result.total / limit)
-    }
+    result: { tweets: result.tweets, limit, page, total_page: Math.ceil(result.total / limit) }
   })
 }

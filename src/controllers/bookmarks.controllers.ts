@@ -11,16 +11,10 @@ export const bookmarkTweetController = async (
 ) => {
   const { user_id } = req.decoded_authorization as TokenPayload
   const result = await bookmarkService.bookmarkTweet(user_id, req.body.tweet_id)
-  return res.json({
-    message: BOOKMARK_MESSAGES.BOOKMARK_SUCCESSFULLY,
-    result
-  })
+  return res.json({ message: BOOKMARK_MESSAGES.BOOKMARK_SUCCESSFULLY, result })
 }
-
 export const unbookmarkTweetController = async (req: Request, res: Response) => {
   const { user_id } = req.decoded_authorization as TokenPayload
   await bookmarkService.unbookmarkTweet(user_id, req.params.tweet_id)
-  return res.json({
-    message: BOOKMARK_MESSAGES.UNBOOKMARK_SUCCESSFULLY
-  })
+  return res.json({ message: BOOKMARK_MESSAGES.UNBOOKMARK_SUCCESSFULLY })
 }

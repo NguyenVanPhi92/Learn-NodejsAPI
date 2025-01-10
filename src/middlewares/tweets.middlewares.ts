@@ -17,18 +17,8 @@ const tweetAudiences = numberEnumToArray(TweetAudience)
 const mediaTypes = numberEnumToArray(MediaType)
 export const createTweetValidator = validate(
   checkSchema({
-    type: {
-      isIn: {
-        options: [tweetTypes],
-        errorMessage: TWEETS_MESSAGES.INVALID_TYPE
-      }
-    },
-    audience: {
-      isIn: {
-        options: [tweetAudiences],
-        errorMessage: TWEETS_MESSAGES.INVALID_AUDIENCE
-      }
-    },
+    type: { isIn: { options: [tweetTypes], errorMessage: TWEETS_MESSAGES.INVALID_TYPE } },
+    audience: { isIn: { options: [tweetAudiences], errorMessage: TWEETS_MESSAGES.INVALID_AUDIENCE } },
     parent_id: {
       custom: {
         options: (value, { req }) => {
@@ -38,9 +28,7 @@ export const createTweetValidator = validate(
             throw new Error(TWEETS_MESSAGES.PARENT_ID_MUST_BE_A_VALID_TWEET_ID)
           }
           // nếu `type` là tweet thì `parent_id` phải là `null`
-          if (type === TweetType.Tweet && value !== null) {
-            throw new Error(TWEETS_MESSAGES.PARENT_ID_MUST_BE_NULL)
-          }
+          if (type === TweetType.Tweet && value !== null) throw new Error(TWEETS_MESSAGES.PARENT_ID_MUST_BE_NULL)
           return true
         }
       }

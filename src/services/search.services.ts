@@ -18,20 +18,10 @@ class SearchService {
     media_type?: MediaTypeQuery
     people_follow?: PeopleFollow
   }) {
-    const $match: any = {
-      $text: {
-        $search: content
-      }
-    }
+    const $match: any = { $text: { $search: content } }
     if (media_type) {
-      if (media_type === MediaTypeQuery.Image) {
-        $match['medias.type'] = MediaType.Image
-      }
-      if (media_type === MediaTypeQuery.Video) {
-        $match['medias.type'] = {
-          $in: [MediaType.Video, MediaType.HLS]
-        }
-      }
+      if (media_type === MediaTypeQuery.Image) $match['medias.type'] = MediaType.Image
+      if (media_type === MediaTypeQuery.Video) $match['medias.type'] = { $in: [MediaType.Video, MediaType.HLS] }
     }
     if (people_follow && people_follow === PeopleFollow.Following) {
       const user_id_obj = new ObjectId(user_id)

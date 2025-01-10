@@ -18,53 +18,21 @@ import { verifyAccessToken } from '~/utils/commons'
 import { envConfig } from '~/constants/config'
 
 const passwordSchema: ParamSchema = {
-  notEmpty: {
-    errorMessage: USERS_MESSAGES.PASSWORD_IS_REQUIRED
-  },
-  isString: {
-    errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_A_STRING
-  },
-  isLength: {
-    options: {
-      min: 6,
-      max: 50
-    },
-    errorMessage: USERS_MESSAGES.PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50
-  },
+  notEmpty: { errorMessage: USERS_MESSAGES.PASSWORD_IS_REQUIRED },
+  isString: { errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_A_STRING },
+  isLength: { options: { min: 6, max: 50 }, errorMessage: USERS_MESSAGES.PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50 },
   isStrongPassword: {
-    options: {
-      minLength: 6,
-      minLowercase: 1,
-      minUppercase: 1,
-      minNumbers: 1,
-      minSymbols: 1
-    },
+    options: { minLength: 6, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 },
     errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRONG
   }
 }
 
 const confirmPasswordSchema: ParamSchema = {
-  notEmpty: {
-    errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_IS_REQUIRED
-  },
-  isString: {
-    errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_MUST_BE_A_STRING
-  },
-  isLength: {
-    options: {
-      min: 6,
-      max: 50
-    },
-    errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50
-  },
+  notEmpty: { errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_IS_REQUIRED },
+  isString: { errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_MUST_BE_A_STRING },
+  isLength: { options: { min: 6, max: 50 }, errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50 },
   isStrongPassword: {
-    options: {
-      minLength: 6,
-      minLowercase: 1,
-      minUppercase: 1,
-      minNumbers: 1,
-      minSymbols: 1
-    },
+    options: { minLength: 6, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 },
     errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_MUST_BE_STRONG
   },
   custom: {

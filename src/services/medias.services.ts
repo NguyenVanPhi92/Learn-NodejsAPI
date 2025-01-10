@@ -26,12 +26,7 @@ class Queue {
     this.items.push(item)
     // item = /home/duy/Downloads/12312312/1231231221.mp4
     const idName = getNameFromFullname(item.split('/').pop() as string)
-    await databaseService.videoStatus.insertOne(
-      new VideoStatus({
-        name: idName,
-        status: EncodingStatus.Pending
-      })
-    )
+    await databaseService.videoStatus.insertOne(new VideoStatus({ name: idName, status: EncodingStatus.Pending }))
     this.processEncode()
   }
   async processEncode() {
@@ -41,17 +36,8 @@ class Queue {
       const videoPath = this.items[0]
       const idName = getNameFromFullname(videoPath.split('/').pop() as string)
       await databaseService.videoStatus.updateOne(
-        {
-          name: idName
-        },
-        {
-          $set: {
-            status: EncodingStatus.Processing
-          },
-          $currentDate: {
-            updated_at: true
-          }
-        }
+        { name: idName },
+        { $set: { status: EncodingStatus.Processing }, $currentDate: { updated_at: true } }
       )
       try {
         await encodeHLSWithMultipleVideoStreams(videoPath)
@@ -61,43 +47,18 @@ class Queue {
           files.map((filepath) => {
             // filepath: /Users/duthanhduoc/Documents/DuocEdu/NodeJs-Super/Twitter/uploads/videos/6vcpA2ujL7EuaD5gvaPvl/v0/fileSequence0.ts
             const filename = 'videos-hls' + filepath.replace(path.resolve(UPLOAD_VIDEO_DIR), '')
-            return uploadFileToS3({
-              filepath,
-              filename,
-              contentType: mime.getType(filepath) as string
-            })
+            return uploadFileToS3({ filepath, filename, contentType: mime.getType(filepath) as string })
           })
         )
         rimrafSync(path.resolve(UPLOAD_VIDEO_DIR, idName))
         await databaseService.videoStatus.updateOne(
-          {
-            name: idName
-          },
-          {
-            $set: {
-              status: EncodingStatus.Success
-            },
-            $currentDate: {
-              updated_at: true
-            }
-          }
+          { name: idName },
+          { $set: { status: EncodingStatus.Success }, $currentDate: { updated_at: true } }
         )
         console.log(`Encode video ${videoPath} success`)
       } catch (error) {
         await databaseService.videoStatus
-          .updateOne(
-            {
-              name: idName
-            },
-            {
-              $set: {
-                status: EncodingStatus.Failed
-              },
-              $currentDate: {
-                updated_at: true
-              }
-            }
-          )
+          .updateOne({ name: idName }, { $set: { status: EncodingStatus.Failed }, $currentDate: { updated_at: true } })
           .catch((err) => {
             console.error('Update video status error', err)
           })
@@ -145,7 +106,6 @@ class MediasService {
   }
   async uploadVideo(req: Request) {
     const files = await handleUploadVideo(req)
-
     const result: Media[] = await Promise.all(
       files.map(async (file) => {
         const s3Result = await uploadFileToS3({
@@ -170,7 +130,6 @@ class MediasService {
   }
   async uploadVideoHLS(req: Request) {
     const files = await handleUploadVideo(req)
-
     const result: Media[] = await Promise.all(
       files.map(async (file) => {
         const newName = getNameFromFullname(file.newFilename)
@@ -190,7 +149,5 @@ class MediasService {
     return data
   }
 }
-
 const mediasService = new MediasService()
-
 export default mediasService
