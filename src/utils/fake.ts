@@ -22,7 +22,6 @@ const MYID = new ObjectId('64ae518e12de778b00d04657')
 
 // Số lượng user được tạo, mỗi user sẽ mặc định tweet 2 cái
 const USER_COUNT = 400
-
 const createRandomUser = () => {
   const user: RegisterReqBody = {
     name: faker.internet.displayName(),
@@ -38,17 +37,9 @@ const createRandomTweet = () => {
   const tweet: TweetRequestBody = {
     type: TweetType.Tweet,
     audience: TweetAudience.Everyone,
-    content: faker.lorem.paragraph({
-      min: 10,
-      max: 160
-    }),
+    content: faker.lorem.paragraph({ min: 10, max: 160 }),
     hashtags: ['NodeJS', 'MongoDB', 'ExpressJS', 'Swagger', 'Docker', 'Socket.io'],
-    medias: [
-      {
-        type: MediaType.Image,
-        url: faker.image.url()
-      }
-    ],
+    medias: [{ type: MediaType.Image, url: faker.image.url() }],
     mentions: [],
     parent_id: null
   }
@@ -84,12 +75,7 @@ const followMultipleUsers = async (user_id: ObjectId, followed_user_ids: ObjectI
   console.log('Start following...')
   const result = await Promise.all(
     followed_user_ids.map((followed_user_id) =>
-      databaseService.followers.insertOne(
-        new Follower({
-          user_id,
-          followed_user_id: new ObjectId(followed_user_id)
-        })
-      )
+      databaseService.followers.insertOne(new Follower({ user_id, followed_user_id: new ObjectId(followed_user_id) }))
     )
   )
   console.log(`Followed ${result.length} users`)
@@ -101,13 +87,8 @@ const checkAndCreateHashtags = async (hashtags: string[]) => {
       // Tìm hashtag trong database, nếu có thì lấy, không thì tạo mới
       return databaseService.hashtags.findOneAndUpdate(
         { name: hashtag },
-        {
-          $setOnInsert: new Hashtag({ name: hashtag })
-        },
-        {
-          upsert: true,
-          returnDocument: 'after'
-        }
+        { $setOnInsert: new Hashtag({ name: hashtag }) },
+        { upsert: true, returnDocument: 'after' }
       )
     })
   )

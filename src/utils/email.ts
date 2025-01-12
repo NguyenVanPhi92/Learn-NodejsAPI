@@ -40,15 +40,9 @@ const createSendEmailCommand = ({
       /* required */
       Body: {
         /* required */
-        Html: {
-          Charset: 'UTF-8',
-          Data: body
-        }
+        Html: { Charset: 'UTF-8', Data: body }
       },
-      Subject: {
-        Charset: 'UTF-8',
-        Data: subject
-      }
+      Subject: { Charset: 'UTF-8', Data: subject }
     },
     Source: fromAddress,
     ReplyToAddresses: replyToAddresses instanceof Array ? replyToAddresses : [replyToAddresses]

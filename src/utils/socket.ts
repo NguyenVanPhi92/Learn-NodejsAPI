@@ -12,14 +12,10 @@ import { Server as ServerHttp } from 'http'
 
 const initSocket = (httpServer: ServerHttp) => {
   const io = new Server(httpServer, {
-    cors: {
-      origin: 'http://localhost:3000'
-    }
+    cors: { origin: 'http://localhost:3000' }
   })
   const users: {
-    [key: string]: {
-      socket_id: string
-    }
+    [key: string]: { socket_id: string }
   } = {}
 
   io.use(async (socket, next) => {
@@ -49,9 +45,7 @@ const initSocket = (httpServer: ServerHttp) => {
   io.on('connection', (socket) => {
     console.log(`user ${socket.id} connected`)
     const { user_id } = socket.handshake.auth.decoded_authorization as TokenPayload
-    users[user_id] = {
-      socket_id: socket.id
-    }
+    users[user_id] = { socket_id: socket.id }
     socket.use(async (packet, next) => {
       const { access_token } = socket.handshake.auth
       try {
@@ -63,9 +57,7 @@ const initSocket = (httpServer: ServerHttp) => {
     })
 
     socket.on('error', (error) => {
-      if (error.message === 'Unauthorized') {
-        socket.disconnect()
-      }
+      if (error.message === 'Unauthorized') socket.disconnect()
     })
     socket.on('send_message', async (data) => {
       const { receiver_id, sender_id, content } = data.payload
@@ -78,9 +70,7 @@ const initSocket = (httpServer: ServerHttp) => {
       const result = await databaseService.conversations.insertOne(conversation)
       conversation._id = result.insertedId
       if (receiver_socket_id) {
-        socket.to(receiver_socket_id).emit('receive_message', {
-          payload: conversation
-        })
+        socket.to(receiver_socket_id).emit('receive_message', { payload: conversation })
       }
     })
     socket.on('disconnect', () => {

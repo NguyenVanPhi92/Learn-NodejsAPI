@@ -6,10 +6,7 @@ import HTTP_STATUS from '~/constants/httpStatus'
 import { envConfig } from '~/constants/config'
 const s3 = new S3({
   region: envConfig.awsRegion,
-  credentials: {
-    secretAccessKey: envConfig.awsSecretAccessKey,
-    accessKeyId: envConfig.awsAccessKeyId
-  }
+  credentials: { secretAccessKey: envConfig.awsSecretAccessKey, accessKeyId: envConfig.awsAccessKeyId }
 })
 
 export const uploadFileToS3 = ({

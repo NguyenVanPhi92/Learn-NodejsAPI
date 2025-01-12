@@ -12,9 +12,7 @@ const runCommandWithImmediateOutput = (command: string, arg: string[]) => {
       resolve(String(data).trim())
     })
     childProcess.on('close', (code) => {
-      if (code !== 0) {
-        reject(new Error('Command failed'))
-      }
+      if (code !== 0) reject(new Error('Command failed'))
     })
   })
 }
@@ -23,11 +21,7 @@ const runCommandWithProgress = (command: string, arg: string[]) => {
   return new Promise<true>((resolve, reject) => {
     const childProcess = spawn(command, arg)
     childProcess.on('close', (code) => {
-      if (code === 0) {
-        resolve(true)
-      } else {
-        reject(new Error('Command failed'))
-      }
+      code === 0 ? resolve(true) : reject(new Error('Command failed'))
     })
   })
 }

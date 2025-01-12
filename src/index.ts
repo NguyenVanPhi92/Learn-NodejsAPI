@@ -41,11 +41,7 @@ const options: swaggerJsdoc.Options = {
         }
       }
     },
-    security: [
-      {
-        BearerAuth: []
-      }
-    ],
+    security: [{ BearerAuth: [] }],
     persistAuthorization: true
   },
   apis: ['./openapi/*.yaml'] // files containing annotations as above
@@ -68,12 +64,9 @@ const limiter = rateLimit({
   // store: ... , // Use an external store for more precise rate limiting
 })
 app.use(limiter)
-
 const httpServer = createServer(app)
 app.use(helmet())
-const corsOptions: CorsOptions = {
-  origin: isProduction ? envConfig.clientUrl : '*'
-}
+const corsOptions: CorsOptions = { origin: isProduction ? envConfig.clientUrl : '*' }
 app.use(cors(corsOptions))
 const port = envConfig.port
 
