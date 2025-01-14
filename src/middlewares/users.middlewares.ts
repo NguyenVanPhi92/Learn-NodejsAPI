@@ -401,18 +401,13 @@ export const updateMeValidator = validate(
         },
         trim: true,
         isLength: {
-          options: {
-            min: 1,
-            max: 200
-          },
+          options: { min: 1, max: 200 },
           errorMessage: USERS_MESSAGES.BIO_LENGTH
         }
       },
       location: {
         optional: true,
-        isString: {
-          errorMessage: USERS_MESSAGES.LOCATION_MUST_BE_STRING
-        },
+        isString: { errorMessage: USERS_MESSAGES.LOCATION_MUST_BE_STRING },
         trim: true,
         isLength: {
           options: {
